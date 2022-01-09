@@ -2,20 +2,30 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
-export const usePokemon = ({ name = "pikachu" }) => {
+export const usePokemon = ({ url }) => {
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      .then((res) => setPokemon(res.data))
-      .catch((err) => console.error);
-  }, [name]);
-  useEffect(() => {
-    return () => {
-      console.log("cleaned up");
+    let unmounted = false;
+    let source = axios.CancelToken.source();
+    const fetchData = () => {
+      axios
+        .get(url, {
+          cancelToken: source.token,
+        })
+        .then((res) => {
+          if (!unmounted) {
+            setPokemon(res.data);
+          }
+        })
+        .catch((err) => console.error);
     };
-  }, []);
+    fetchData();
+    return () => {
+      unmounted = true;
+      source.cancel("Cancelling in cleanup");
+    };
+  }, [url]);
 
-  return pokemon ?? null;
+  return { pokemon };
 };

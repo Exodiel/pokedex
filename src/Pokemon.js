@@ -7,7 +7,7 @@ import {
   CardContent,
   CircularProgress,
   Chip,
-  Box
+  Box,
 } from "@material-ui/core";
 
 import { usePokemon } from "./hooks/usePokemon";
@@ -15,10 +15,11 @@ import { usePokemon } from "./hooks/usePokemon";
 const Pokemon = withRouter(
   ({
     match: {
-      params: { name }
-    }
+      params: { name },
+    },
   }) => {
-    const pokemon = usePokemon({ name });
+    const url = `https://pokeapi.co/api/v2/pokemon/${name}`;
+    const { pokemon } = usePokemon({ url });
 
     return (
       <Box data-testid="pokemonId">
@@ -27,7 +28,7 @@ const Pokemon = withRouter(
             style={{
               display: "flex",
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <CardMedia>
@@ -50,7 +51,7 @@ const Pokemon = withRouter(
               style={{
                 fontSize: "1.5rem",
                 fontWeight: 600,
-                textAlign: "center"
+                textAlign: "center",
               }}
               gutterBottom
               variant="h5"
@@ -64,7 +65,7 @@ const Pokemon = withRouter(
                 flexWrap: "wrap",
                 gap: "10px",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               {pokemon
@@ -88,7 +89,7 @@ const Pokemon = withRouter(
                   style={{
                     fontSize: "1.5rem",
                     fontWeight: 600,
-                    textAlign: "center"
+                    textAlign: "center",
                   }}
                   gutterBottom
                   variant="h5"
@@ -102,7 +103,7 @@ const Pokemon = withRouter(
                       key={index}
                       style={{
                         textDecoration: "none",
-                        textAlign: "center"
+                        textAlign: "center",
                       }}
                       to={`/pokemon/${pokemon.name}/moves/${item.move.name}`}
                     >
@@ -111,7 +112,7 @@ const Pokemon = withRouter(
                           fontSize: "18px",
                           marginBottom: "10px",
                           marginRight: "10px",
-                          cursor: "pointer"
+                          cursor: "pointer",
                         }}
                         label={item.move.name}
                         size="medium"

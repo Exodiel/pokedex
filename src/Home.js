@@ -25,7 +25,7 @@ const Home = () => {
   };
 
   return (
-    <Container>
+    <Container data-testid="homeId">
       <Typography
         style={{
           fontSize: "18px",

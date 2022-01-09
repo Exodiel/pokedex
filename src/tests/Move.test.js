@@ -40,7 +40,6 @@ describe("Testing Move Component", () => {
       </MemoryRouter>
     );
     const wrapperNode = getByTestId("moveId");
-    console.log(wrapperNode);
     const textNode = wrapperNode.childNodes[0].childNodes[1].childNodes[0];
     expect(textNode.textContent).toEqual(moveMock);
   });

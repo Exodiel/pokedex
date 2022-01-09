@@ -10,7 +10,7 @@ import {
   TableCell,
   CardActionArea,
   CardMedia,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 
@@ -20,11 +20,12 @@ import { usePokemon } from "./hooks/usePokemon";
 const Move = withRouter(
   ({
     match: {
-      params: { name, poke }
-    }
+      params: { name, poke },
+    },
   }) => {
-    const move = useMove({ name });
-    const pokemon = usePokemon({ name: poke });
+    const url = `https://pokeapi.co/api/v2/pokemon/${poke}`;
+    const { move } = useMove({ url: `https://pokeapi.co/api/v2/move/${name}` });
+    const { pokemon } = usePokemon({ url });
     return (
       <Box data-testid="moveId">
         <Card>
@@ -32,7 +33,7 @@ const Move = withRouter(
             style={{
               display: "flex",
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <CardMedia>
@@ -55,7 +56,7 @@ const Move = withRouter(
               style={{
                 fontSize: "2.5rem",
                 fontWeight: 600,
-                textAlign: "center"
+                textAlign: "center",
               }}
               gutterBottom
               variant="h5"
@@ -73,7 +74,7 @@ const Move = withRouter(
                       <Typography
                         style={{
                           fontSize: "1.5rem",
-                          fontWeight: 600
+                          fontWeight: 600,
                         }}
                         gutterBottom
                         variant="h5"
@@ -99,7 +100,7 @@ const Move = withRouter(
                       <Typography
                         style={{
                           fontSize: "1.5rem",
-                          fontWeight: 600
+                          fontWeight: 600,
                         }}
                         gutterBottom
                         variant="h5"
@@ -125,7 +126,7 @@ const Move = withRouter(
                       <Typography
                         style={{
                           fontSize: "1.5rem",
-                          fontWeight: 600
+                          fontWeight: 600,
                         }}
                         gutterBottom
                         variant="h5"
@@ -149,7 +150,7 @@ const Move = withRouter(
                       <Typography
                         style={{
                           fontSize: "1.5rem",
-                          fontWeight: 600
+                          fontWeight: 600,
                         }}
                         gutterBottom
                         variant="h5"

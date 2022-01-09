@@ -12,20 +12,31 @@ export const usePokemons = () => {
     axios
       .get(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${page * 20}`)
       .then((res) => {
-        console.log(res.data);
         setPokemons(res.data.results);
+        setCount(Math.floor(res.data.count / 20));
       })
       .catch((err) => console.error);
   };
 
   useEffect(() => {
+    let unmounted = false;
+    let source = axios.CancelToken.source();
     axios
-      .get(API_URL)
+      .get(API_URL, {
+        cancelToken: source.token,
+      })
       .then((res) => {
-        setPokemons(res.data.results);
-        setCount(Math.floor(res.data.count / 20));
+        if (!unmounted) {
+          setPokemons(res.data.results);
+          setCount(Math.floor(res.data.count / 20));
+        }
       })
       .catch((err) => console.error);
+
+    return () => {
+      unmounted = true;
+      source.cancel("Cancelling in cleanup");
+    }
   }, []);
   return { pokemons, loadMore, count };
 };

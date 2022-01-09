@@ -2,20 +2,27 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
-export const useMove = ({ name = "razor-wind" }) => {
+export const useMove = ({ url }) => {
   const [move, setMove] = useState(null);
 
   useEffect(() => {
+    let unmounted = false;
+    let source = axios.CancelToken.source();
     axios
-      .get(`https://pokeapi.co/api/v2/move/${name}`)
-      .then((res) => setMove(res.data))
+      .get(url, {
+        cancelToken: source.token,
+      })
+      .then((res) => {
+        if (!unmounted) {
+          setMove(res.data);
+        }
+      })
       .catch((err) => console.error);
-  }, [name]);
-  useEffect(() => {
     return () => {
-      console.log("cleaned up");
+      unmounted = true;
+      source.cancel("Cancelling in cleanup");
     };
-  }, []);
+  }, [url]);
 
-  return move ?? null;
+  return { move };
 };
